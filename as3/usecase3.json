@@ -102,7 +102,7 @@
                             "actions": [
                                 {
                                     "type": "httpRedirect",
-                                    "location": "tcl:/index.php\/[class match -value -- [HTTP::header value HTTP_RESPONSIVE_LWPBUILDER] equals responsive_lwp_builder_map]?[URI::query [HTTP::uri] model_id]"
+                                    "location": "tcl:/index.php\/[class match -value -- [HTTP::header value HTTP_RESPONSIVE_LWPBUILDER] equals responsive_lwp_builder_map]/shop/productdetails/[URI::query [HTTP::uri] oc]?oc=[URI::query [HTTP::uri] oc]&model_id=[URI::query [HTTP::uri] model_id]"
                                 }
                             ]
                         },
