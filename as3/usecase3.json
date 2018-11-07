@@ -80,8 +80,7 @@
                             "actions": [
                                 {
                                     "type": "httpRedirect",
-                                    "event": "response",
-                                    "location": "/index.php"
+                                    "location": "tcl:/index.php\/?[URI::query [HTTP::uri] model_id]"
                                 }
                             ]
                         },
