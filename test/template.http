@@ -1,0 +1,7 @@
+@F5_SERVER = enter_your_BIG-IP
+@AUTHORIZATION = enter_your_authorization_header
+POST https://{{F5_SERVER}}/mgmt/shared/appsvcs/declare HTTP/1.1
+Authorization: {{AUTHORIZATION}}
+content-type: application/json
+
+< ../as3/as3.json

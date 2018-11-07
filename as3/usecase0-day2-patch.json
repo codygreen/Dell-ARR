@@ -1,0 +1,23 @@
+[
+    {
+        "op": "add",
+        "path": "/premiere/usecase0_blue_vs/usecase0_l7policy/rules/0",
+        "value": {
+            "name": "statsRedirect",
+            "conditions": [
+                {
+                    "type": "httpUri",
+                    "event": "request",
+                    "path": {"operand": "starts-with","values": ["/s"]}
+                }
+            ],
+            "actions": [
+                {
+                    "type": "httpRedirect",
+                    "event": "response",
+                    "location": "/index.php"
+                }
+            ]
+        }
+    }
+]

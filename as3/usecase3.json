@@ -1,0 +1,114 @@
+{
+    "class": "AS3",
+    "action": "deploy",
+    "declaration": {
+        "class": "ADC",
+        "schemaVersion": "3.6.0",
+        "id": "usecase0_blue_id",
+        "label": "usecase0_blue_label",
+        "remark": "usecase0_blue_remark",
+        "premiere": {
+            "class": "Tenant",
+            "usecase0_blue_vs": {
+                "class": "Application",
+                "template": "http",
+                "serviceMain": {
+                    "class": "Service_HTTP",
+                    "virtualAddresses": [
+                        "10.128.10.201"
+                    ],
+                    "snat": "auto",
+                    "pool": "usecase0_blue_pl",
+                    "iRules": [
+                        {
+                            "bigip": "/Common/unittest"
+                        }
+                    ],
+                    "policyEndpoint": "test_l7policy"
+                },
+                "usecase0_blue_pl": {
+                    "class": "Pool",
+                    "monitors": [
+                        "http"
+                    ],
+                    "members": [
+                        {
+                            "servicePort": 80,
+                            "serverAddresses": [
+                                "10.128.20.4"
+                            ]
+                        }
+                    ]
+                },
+                "test_l7policy": {
+                    "class": "Endpoint_Policy",
+                    "remark": "L7 Policy for stats",
+                    "rules": [
+                        {
+                            "name": "stp",
+                            "conditions": [
+                                {
+                                    "type": "httpUri",
+                                    "event": "request",
+                                    "path": {
+                                        "operand": "contains",
+                                        "values": [
+                                            "p/",
+                                            "/pd"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "HTTP_RESPONSIVE_ENABLED",
+                                    "type": "httpHeader",
+                                    "all": {
+                                        "values": [
+                                            "true"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "HTTP_TRANS_OVERRIDE_MOBILE",
+                                    "type": "httpHeader",
+                                    "all": {
+                                        "values": [
+                                            "false"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "actions": [
+                                {
+                                    "type": "httpRedirect",
+                                    "event": "response",
+                                    "location": "/index.php"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "canary",
+                            "actions": [
+                                {
+                                    "type": "httpHeader",
+                                    "event": "request",
+                                    "insert": {
+                                    	"name": "canary_percentage",
+                                    	"value": "20"
+                                    }
+                                },
+                                {
+                                    "type": "httpHeader",
+                                    "event": "request",
+                                    "insert": {
+                                        "name": "canary_pool",
+                                        "value": "/premiere_0/usecase1_canary_vs/usecase1_canary_pl"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
