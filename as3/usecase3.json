@@ -40,6 +40,28 @@
                         }
                     ]
                 },
+                "responsive_lwp_builder_map" :{
+                    "class": "Data_Group",
+                    "keyDataType": "string",
+                    "records": [
+                        {
+                            "key": "l=da,c=dk,s=bsd",
+                            "value": "da-dk/work"
+                        },
+                        {
+                            "key": "l=da,c=dk,s=dhs",
+                            "value": "da-dk"
+                        },
+                        {
+                            "key": "l=de,c=at,s=bsd",
+                            "value": "de-at/work"
+                        },
+                        {
+                            "key": "l=de,c=at,s=dhs",
+                            "value": "de-at"
+                        }
+                    ]
+                },
                 "test_l7policy": {
                     "class": "Endpoint_Policy",
                     "remark": "L7 Policy for stats",
@@ -80,7 +102,7 @@
                             "actions": [
                                 {
                                     "type": "httpRedirect",
-                                    "location": "tcl:/index.php\/?[URI::query [HTTP::uri] model_id]"
+                                    "location": "tcl:/index.php\/[class match -value -- [HTTP::header value HTTP_RESPONSIVE_LWPBUILDER] equals responsive_lwp_builder_map]?[URI::query [HTTP::uri] model_id]"
                                 }
                             ]
                         },
