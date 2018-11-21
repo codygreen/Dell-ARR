@@ -36,10 +36,10 @@
                 },
                 "usecase0_l7policy": {
                     "class": "Endpoint_Policy",
-                    "remark": "L7 Policy for stats",
+                    "remark": "L7 Policies",
                     "rules": [
                         {
-                            "name": "stats",
+                            "name": "redirect",
                             "conditions": [
                                 {
                                     "type": "httpUri",
@@ -47,7 +47,7 @@
                                     "path": {
                                         "operand": "equals",
                                         "values": [
-                                            "/stats"
+                                            "/shop/xps-12-9370-laptop"
                                         ]
                                     }
                                 }
@@ -56,7 +56,30 @@
                                 {
                                     "type": "httpRedirect",
                                     "event": "response",
-                                    "location": "/index.php"
+                                    "location": "/mystore/1234/xps-12-9370-laptop"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "rewrite",
+                            "conditions": [
+                                {
+                                    "type": "httpUri",
+                                    "event": "request",
+                                    "path": {
+                                        "operand": "equals",
+                                        "values": [
+                                            "/models/xps-12-9370-laptop"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "actions": [
+                                {
+                                    "type": "httpUri",
+                                    "replace": {
+                                        "path": "/mystore/1234/xps-12-9370-laptop"
+                                    }
                                 }
                             ]
                         }
