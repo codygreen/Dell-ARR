@@ -4,12 +4,12 @@
     "declaration": {
         "class": "ADC",
         "schemaVersion": "3.6.0",
-        "id": "usecase0_blue_id",
-        "label": "usecase0_blue_label",
-        "remark": "usecase0_blue_remark",
+        "id": "usecase3_blue_id",
+        "label": "usecase3_blue_label",
+        "remark": "usecase3_blue_remark",
         "premiere": {
             "class": "Tenant",
-            "usecase0_blue_vs": {
+            "usecase3_blue_vs": {
                 "class": "Application",
                 "template": "http",
                 "serviceMain": {
@@ -18,7 +18,7 @@
                         "10.128.10.201"
                     ],
                     "snat": "auto",
-                    "pool": "usecase0_blue_pl",
+                    "pool": "usecase3_blue_pl",
                     "iRules": [
                         {
                             "bigip": "/Common/unittest"
@@ -26,7 +26,7 @@
                     ],
                     "policyEndpoint": "test_l7policy"
                 },
-                "usecase0_blue_pl": {
+                "usecase3_blue_pl": {
                     "class": "Pool",
                     "monitors": [
                         "http"
@@ -122,7 +122,7 @@
                                     "event": "request",
                                     "insert": {
                                         "name": "canary_pool",
-                                        "value": "/premiere_0/usecase1_canary_vs/usecase1_canary_pl"
+                                        "value": "/premiere/usecase3_blue_vs/usecase3_blue_pl"
                                     }
                                 }
                             ]
