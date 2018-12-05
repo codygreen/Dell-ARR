@@ -1,0 +1,71 @@
+{
+    "class": "AS3",
+    "action": "deploy",
+    "declaration": {
+        "class": "ADC",
+        "schemaVersion": "3.6.0",
+        "id": "insert_cookie_id",
+        "label": "insert_cookie_label",
+        "remark": "insert_cookie_remark",
+        "premiere": {
+            "class": "Tenant",
+            "insert_cookie_vs": {
+                "class": "Application",
+                "template": "http",
+                "serviceMain": {
+                    "class": "Service_HTTP",
+                    "virtualAddresses": [
+                        "10.128.10.201"
+                    ],
+                    "snat": "auto",
+                    "pool": "insert_cookie_pl",
+                    "policyEndpoint": "insert_cookie_l7policy"
+                },
+                "insert_cookie_pl": {
+                    "class": "Pool",
+                    "monitors": [
+                        "http"
+                    ],
+                    "members": [
+                        {
+                            "servicePort": 80,
+                            "serverAddresses": [
+                                "10.128.20.4"
+                            ]
+                        }
+                    ]
+                },
+                "insert_cookie_l7policy": {
+                    "class": "Endpoint_Policy",
+                    "remark": "L7 Policies",
+                    "rules": [
+                        {
+                            "name": "insert_cookie",
+                            "conditions": [
+                                {
+                                    "type": "httpUri",
+                                    "event": "request",
+                                    "path": {
+                                        "operand": "equals",
+                                        "values": [
+                                            "/shop/xps-12-9370-laptop"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "actions": [
+                                {
+                                    "type": "httpCookie",
+                                    "insert": {
+                                        "name": "test_cookie",
+                                        "value": "test cookie value"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
