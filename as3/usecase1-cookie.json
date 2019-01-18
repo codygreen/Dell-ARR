@@ -1,0 +1,91 @@
+{
+    "class": "AS3",
+    "action": "deploy",
+    "declaration": {
+        "class": "ADC",
+        "schemaVersion": "3.6.0",
+        "id": "usecase0_blue_id",
+        "label": "usecase0_blue_label",
+        "remark": "usecase0_blue_remark",
+        "premiere": {
+            "class": "Tenant",
+            "usecase0_blue_vs": {
+                "class": "Application",
+                "template": "http",
+                "serviceMain": {
+                    "class": "Service_HTTP",
+                    "virtualAddresses": [
+                        "10.128.10.201"
+                    ],
+                    "snat": "auto",
+                    "pool": "usecase0_blue_pl",
+                    "policyEndpoint": "usecase0_l7policy"
+                },
+                "usecase0_blue_pl": {
+                    "class": "Pool",
+                    "monitors": [
+                        "http"
+                    ],
+                    "members": [{
+                            "servicePort": 80,
+                            "serverAddresses": [
+                                "10.128.20.4"
+                            ]
+                        }
+                    ]
+                },
+                "usecase0_l7policy": {
+                    "class": "Endpoint_Policy",
+                    "remark": "L7 Policies",
+                    "rules": [
+                        {
+                            "name": "redirect",
+                            "conditions": [
+                                {
+                                    "type": "httpCookie",
+                                    "event": "request",
+                                    "all": {
+                                        "values": [
+                                            "redirectUser"
+                                        ]
+                                    },
+                                    "name": "testCookie"
+                                }
+                            ],
+                            "actions": [
+                                {
+                                    "type": "httpRedirect",
+                                    "event": "response",
+                                    "location": "/mystore/1234/xps-12-9370-laptop"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "rewrite",
+                            "conditions": [
+                                {
+                                    "type": "httpCookie",
+                                    "event": "request",
+                                    "all": {
+                                        "values": [
+                                            "redirectUser"
+                                        ]
+                                    },
+                                    "name": "testCookie"
+                                }
+                            ],
+                            "actions": [
+                                {
+                                    "type": "httpUri",
+                                    "replace": {
+                                        "path": "/mystore/1234/xps-12-9370-laptop"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
